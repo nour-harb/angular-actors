@@ -1,0 +1,39 @@
+<p>actor-search works!</p>
+
+<div>
+  <input type="text" [(ngModel)]="query" placeholder="Enter actor name">
+  <button (click)="searchActors()">Search</button>
+</div>
+
+<div *ngIf="searchResults.length > 0">
+  <h2>Search Results</h2>
+  <div class="actors-grid">
+    <div *ngFor="let actor of searchResults; let i = index">
+      <img *ngIf="actor.profile_path" src="https://image.tmdb.org/t/p/w185{{ actor.profile_path }}" alt="{{ actor.name }} profile picture">
+      <img *ngIf="!actor.profile_path" src="assets/default-actor-picture.png" alt="Default actor picture"> <h3>{{ actor.name }}</h3>
+      <p *ngIf="actor.known_for.length > 0">Known for:</p>
+      <ul *ngIf="actor.known_for.length > 0">
+        <li *ngFor="let movie of actor.known_for; let j = index">
+          {{ movie.title }}
+          {{ (j + 1) < actor.known_for.length ? ',' : '' }} </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<style>
+  .actors-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .actors-grid div {
+    text-align: center;
+  }
+
+  .actors-grid img {
+    width: 150px;
+    height: auto;
+  }
+</style>
