@@ -1,6 +1,7 @@
-<p>actor-search works!</p>
+<p class="info-text">Actor search works!</p>
 
-<div>
+<button (click)="navigateToFavorites()">View Favorites</button>
+<div class="search-bar">
   <input type="text" [(ngModel)]="query" placeholder="Enter actor name">
   <button (click)="searchActors()">Search</button>
 </div>
@@ -8,32 +9,22 @@
 <div *ngIf="searchResults.length > 0">
   <h2>Search Results</h2>
   <div class="actors-grid">
-    <div *ngFor="let actor of searchResults; let i = index">
-      <img *ngIf="actor.profile_path" src="https://image.tmdb.org/t/p/w185{{ actor.profile_path }}" alt="{{ actor.name }} profile picture">
-      <img *ngIf="!actor.profile_path" src="assets/default-actor-picture.png" alt="Default actor picture"> <h3>{{ actor.name }}</h3>
-      <p *ngIf="actor.known_for.length > 0">Known for:</p>
-      <ul *ngIf="actor.known_for.length > 0">
-        <li *ngFor="let movie of actor.known_for; let j = index">
-          {{ movie.title }}
-          {{ (j + 1) < actor.known_for.length ? ',' : '' }} </li>
-      </ul>
-    </div>
+    <ng-container *ngFor="let actor of searchResults; let i = index">
+      <div class="actor-card" *ngIf="i < 9">
+        <img [src]="actor.profile_path ? 'https://image.tmdb.org/t/p/w185' + actor.profile_path : 'assets/default-actor-picture.png'" [alt]="actor.name + ' profile picture'">
+        <svg class="heart-icon" width="20" height="20" viewBox="0 0 24 24" (click)="toggleFavorite(actor.id)" [ngClass]="{'filled-heart': isFavorite(actor.id)}">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+        <h3>{{ actor.name }}</h3>
+        <div *ngIf="actor.known_for.length > 0" class="known-for">
+          <p>Known for:</p>
+          <ul>
+            <li *ngFor="let movie of actor.known_for; let j = index">
+              {{ movie.title }}{{ (j + 1) < actor.known_for.length ? ',' : '' }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </ng-container>
   </div>
 </div>
-
-<style>
-  .actors-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-  }
-
-  .actors-grid div {
-    text-align: center;
-  }
-
-  .actors-grid img {
-    width: 150px;
-    height: auto;
-  }
-</style>

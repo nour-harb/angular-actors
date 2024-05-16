@@ -1,0 +1,16 @@
+<div class="favorite-actors">
+  <h2>Favorite Actors</h2>
+  <div *ngIf="favoriteActors.length > 0; else noFavorites">
+    <div class="actors-grid">
+      <div *ngFor="let actor of favoriteActors" class="actor-card">
+        <img [src]="actor.profile_path ? 'https://image.tmdb.org/t/p/w185' + actor.profile_path : 'assets/default-actor-picture.png'" [alt]="actor.name + ' profile picture'">
+        <h3>{{ actor.name }}</h3>
+      </div>
+    </div>
+  </div>
+  <ng-template #noFavorites>
+    <p>No favorite actors found.</p>
+  </ng-template>
+</div>
+
+
