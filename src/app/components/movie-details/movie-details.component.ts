@@ -29,22 +29,11 @@ export class MovieDetailsComponent {
 
  
 
-  getPopularityStars(popularity: number): number[] {
+  calculatePopularityStars(popularity: number): number[] {
     const maxStars = 5;
-  
-    // Calculate filled stars considering decimals (more accurate)
-    const filledStars = Math.max(0, Math.floor(popularity * 0.5)); 
-    const partialStar = popularity % 1 !== 0 ? 1 : 0;
-  
-    // Calculate empty stars considering decimals
-    let emptyStars = maxStars - (filledStars + partialStar);
-  
-    // Handle edge cases (popularity very close to a whole number)
-    if (Math.abs(emptyStars) < 0.001) {
-      emptyStars = 0; // Set empty stars to 0 if very close to 0
-    }
-  
-    return Array(filledStars).fill(1).concat(partialStar ? 0.5 : 0).concat(Array(emptyStars).fill(0.1));
+    const scaledPopularity = (popularity / 100) * maxStars;
+    const roundedPopularity = Math.round(scaledPopularity);
+    return new Array(roundedPopularity).fill(0);
   }
                     
                       
