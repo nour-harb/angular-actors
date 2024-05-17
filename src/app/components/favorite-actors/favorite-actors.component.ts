@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Actor } from '../../models/actor';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-favorite-actors',
@@ -12,6 +13,8 @@ import { Actor } from '../../models/actor';
 export class FavoriteActorsComponent implements OnInit {
   favoriteActors: Actor[] = [];
 
+  constructor(private router: Router) { }
+
   ngOnInit(): void {
     this.loadFavorites();
   }
@@ -22,6 +25,10 @@ export class FavoriteActorsComponent implements OnInit {
       const serializedActors = JSON.parse(favorites) as string[]; // Parse to string[]
       this.favoriteActors = serializedActors.map(serializedActor => JSON.parse(serializedActor) as Actor); // Parse each string back to Actor
     }
+  }
+
+  onActorSelected(actor: Actor) {
+    this.router.navigate(['/list-movies', actor.id]);
   }
   
 }

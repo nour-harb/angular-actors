@@ -40,7 +40,8 @@ export class ActorSearchComponent implements OnInit {
     this.router.navigate(['/list-movies', actor.id]);
   }
 
-  toggleFavorite(actor: Actor): void {
+  toggleFavorite(event: Event, actor: any): void {
+    event.stopPropagation();
     const index = this.favoriteActorIds.findIndex(favActor => favActor.id === actor.id);
     if (index > -1) {
       this.favoriteActorIds.splice(index, 1); // Remove from favorites
@@ -53,7 +54,7 @@ export class ActorSearchComponent implements OnInit {
   
 
   isFavorite(actor: Actor): boolean {
-    return this.favoriteActorIds.findIndex(favActor => favActor === actor) > -1;
+    return this.favoriteActorIds.some(favActor => favActor.id === actor.id);
   }
 
   private loadFavorites(): void {

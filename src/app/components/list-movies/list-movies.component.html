@@ -3,7 +3,7 @@
     <h2>Movies</h2>
     <div class="movies-grid">
       <div class="movie-card" *ngFor="let movie of movies; let i = index" (click)="onMovieClick(movie)">
-        <img [src]="movie.poster_path ? 'https://image.tmdb.org/t/p/w185' + movie.poster_path : 'assets/default-movie-poster.png'" alt="{{ movie.title }} poster">
+        <img *ngIf="movie.poster_path" [src]="'https://image.tmdb.org/t/p/w185' + movie.poster_path" alt="{{ movie.title }} poster">
         <h3>{{ movie.title }}</h3>
       </div>
     </div>
