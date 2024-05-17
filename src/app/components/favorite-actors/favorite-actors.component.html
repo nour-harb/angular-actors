@@ -1,12 +1,14 @@
 <p class="info-text">Favorite actors works!</p>
 
+<button (click)="navigateToSearch()">Search</button>
+
 
 <div *ngIf="favoriteActors.length > 0">
 
   <h2>Favorite Actors</h2>
   
   <div class="actors-grid">
-    <ng-container *ngFor="let actor of favoriteActors; let i = index">
+    <ng-container *ngFor="let actor of favoriteActors.slice(currentPage * 9, (currentPage + 1) * 9); let i = index">
       <div class="actor-card" *ngIf="i < 9" (click)="onActorSelected(actor)">
         <img [src]="actor.profile_path ? 'https://image.tmdb.org/t/p/w185' + actor.profile_path : 'assets/default-actor-picture.png'" [alt]="actor.name + ' profile picture'">
         <h3>{{ actor.name }}</h3>
@@ -20,5 +22,10 @@
         </div>
       </div>
     </ng-container>
+    <div class="pagination">
+      <button *ngIf="currentPage > 0" (click)="previousPage()">Previous</button>
+      <span>Page {{ currentPage + 1 }} of {{ totalPages }}</span>
+      <button *ngIf="currentPage < totalPages - 1" (click)="nextPage()">Next</button>
+    </div>
   </div>
 </div>

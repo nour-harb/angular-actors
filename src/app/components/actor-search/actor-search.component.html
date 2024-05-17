@@ -10,7 +10,8 @@
 <div *ngIf="searchResults.length > 0">
   <h2>Search Results</h2>
   <div class="actors-grid">
-    <ng-container *ngFor="let actor of searchResults; let i = index">
+    <ng-container *ngFor="let actor of searchResults.slice(currentPage * 9, (currentPage + 1) * 9); let i = index">
+    
       <div class="actor-card" *ngIf="i < 9" (click)="onActorSelected(actor)">
         <img *ngIf="actor.profile_path" [src]="'https://image.tmdb.org/t/p/w185' + actor.profile_path" [alt]="actor.name + ' profile picture'">
         <svg class="heart-icon" width="20" height="20" viewBox="0 0 24 24" (click)="toggleFavorite($event, actor)" [ngClass]="{'filled-heart': isFavorite(actor)}">
@@ -27,5 +28,10 @@
         </div>
       </div>
     </ng-container>
+    <div class="pagination">
+      <button *ngIf="currentPage > 0" (click)="previousPage()">Previous</button>
+      <span>Page {{ currentPage + 1 }} of {{ totalPages }}</span>
+      <button *ngIf="currentPage < totalPages - 1" (click)="nextPage()">Next</button>
+    </div>
   </div>
 </div>

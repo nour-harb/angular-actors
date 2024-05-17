@@ -18,6 +18,10 @@ export class ActorSearchComponent implements OnInit {
   searchResults: Actor[] = [];
   favoriteActorIds: Actor[] = [];
 
+  currentPage: number = 0;
+totalPages: number = 0;
+
+
   constructor(private apiService: ApiThemoviedbService, private router: Router) { }
 
   ngOnInit(): void {
@@ -28,7 +32,8 @@ export class ActorSearchComponent implements OnInit {
     if (this.query.trim() !== '') {
       this.apiService.searchActors(this.query).subscribe(
         actors => {
-          this.searchResults = actors.slice(0, 9);
+          this.searchResults = actors;
+        this.totalPages = Math.ceil(this.searchResults.length / 9);
         },
         error => {
           console.error('Error fetching actors:', error);
@@ -36,6 +41,19 @@ export class ActorSearchComponent implements OnInit {
       );
     }
   }
+
+  previousPage(): void {
+    if (this.currentPage > 0) {
+      this.currentPage--;
+    }
+  }
+  
+  nextPage(): void {
+    if (this.currentPage < this.totalPages - 1) {
+      this.currentPage++;
+    }
+  }
+  
   onActorSelected(actor: Actor) {
     this.router.navigate(['/list-movies', actor.id]);
   }

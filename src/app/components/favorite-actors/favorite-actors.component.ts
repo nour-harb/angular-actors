@@ -12,6 +12,8 @@ import { Router } from '@angular/router';
 })
 export class FavoriteActorsComponent implements OnInit {
   favoriteActors: Actor[] = [];
+  currentPage: number = 0; 
+totalPages: number = 0;
 
   constructor(private router: Router) { }
 
@@ -24,11 +26,28 @@ export class FavoriteActorsComponent implements OnInit {
     if (favorites) {
       const serializedActors = JSON.parse(favorites) as string[]; // Parse to string[]
       this.favoriteActors = serializedActors.map(serializedActor => JSON.parse(serializedActor) as Actor); // Parse each string back to Actor
+    this.totalPages = Math.ceil(this.favoriteActors.length /9);
     }
   }
 
+  previousPage(): void {
+    if (this.currentPage > 0) {
+      this.currentPage--;
+    }
+  }
+  
+  nextPage(): void {
+    if (this.currentPage < this.totalPages - 1) {
+      this.currentPage++;
+    }
+  }
+  
   onActorSelected(actor: Actor) {
     this.router.navigate(['/list-movies', actor.id]);
+  }
+
+  navigateToSearch() {
+    this.router.navigate(['/search-actors']);
   }
   
 }
