@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Actor } from './models/actor';
 import { Observable, map } from 'rxjs';
+import { Film } from './models/film';
 
 @Injectable({
   providedIn: 'root'
@@ -17,9 +18,24 @@ export class ApiThemoviedbService {
     }
   };
 
-  
-
   constructor(private httpClient: HttpClient) { }
+
+  getActorMovies(actorId: number): Observable<Film[]> {
+    let rawObservable: Observable<any>;
+    let moviesObservable: Observable<Film[]>;
+  
+    let endpoint = 'person/'+actorId+'/movie_credits?language=en-US';  
+  
+    rawObservable = this.httpClient.get<any>(this.apiBaseUrl + endpoint,this.options);
+    moviesObservable = rawObservable.pipe(
+      map((data: any) => {
+        const movies: Film[] = data.cast.map((movieData: any) => new Film(movieData));
+        return movies;
+      })
+    );
+  
+    return moviesObservable;
+  }
 
   searchActors(query: string): Observable<Actor[]> {
     let rawObservable: Observable<any>;

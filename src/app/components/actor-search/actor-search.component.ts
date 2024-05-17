@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Actor } from '../../models/actor';
+import { Film } from '../../models/film';
 
 @Component({
   selector: 'app-actor-search',
@@ -35,7 +36,9 @@ export class ActorSearchComponent implements OnInit {
       );
     }
   }
-
+  onActorSelected(actor: Actor) {
+    this.router.navigate(['/list-movies', actor.id]);
+  }
 
   toggleFavorite(actor: Actor): void {
     const index = this.favoriteActorIds.findIndex(favActor => favActor.id === actor.id);
@@ -52,25 +55,22 @@ export class ActorSearchComponent implements OnInit {
   isFavorite(actor: Actor): boolean {
     return this.favoriteActorIds.findIndex(favActor => favActor === actor) > -1;
   }
-  
-  
 
   private loadFavorites(): void {
     const favorites = localStorage.getItem('favoriteActors');
     if (favorites) {
-      const serializedActors = JSON.parse(favorites) as string[]; // Parse to string[]
-      this.favoriteActorIds = serializedActors.map(serializedActor => JSON.parse(serializedActor) as Actor); // Parse each string back to Actor
+      const serializedActors = JSON.parse(favorites) as string[]; 
+      this.favoriteActorIds = serializedActors.map(serializedActor => JSON.parse(serializedActor) as Actor);
     }
   }
   
   
   private saveFavorites(): void {
-    const serializedActors = this.favoriteActorIds.map(actor => JSON.stringify(actor)); // Stringify each Actor object
+    const serializedActors = this.favoriteActorIds.map(actor => JSON.stringify(actor)); 
     localStorage.setItem('favoriteActors', JSON.stringify(serializedActors));
   }
   
   
-
   navigateToFavorites() {
     this.router.navigate(['/favorite-actors']);
   }

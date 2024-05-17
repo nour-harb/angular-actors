@@ -1,0 +1,20 @@
+
+<div *ngIf="movies.length > 0">
+    <h2>Movies</h2>
+    <div class="movies-grid">
+      <div class="movie-card" *ngFor="let movie of movies; let i = index" (click)="onMovieClick(movie)">
+        <img [src]="movie.poster_path ? 'https://image.tmdb.org/t/p/w185' + movie.poster_path : 'assets/default-movie-poster.png'" alt="{{ movie.title }} poster">
+        <h3>{{ movie.title }}</h3>
+      </div>
+    </div>
+
+  <div class="pagination" *ngIf="totalPages > 1">
+    <button (click)="onPageChange(currentPage - 1)" disabled [disabled]="currentPage === 1">Previous</button>
+    <span>Page {{ currentPage }} of {{ totalPages }}</span>
+    <button (click)="onPageChange(currentPage + 1)" disabled [disabled]="currentPage === totalPages">Next</button>
+  </div>
+</div>
+
+<div *ngIf="!movies.length && actorId">Loading movies...</div>
+<div *ngIf="!movies.length && !actorId">No actor selected.</div>
+

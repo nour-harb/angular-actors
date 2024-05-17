@@ -1,0 +1,16 @@
+<div *ngIf="movie">
+    <div class="movie-card" >
+        <img [src]="movie.poster_path ? 'https://image.tmdb.org/t/p/w185' + movie.poster_path : 'assets/default-movie-poster.png'" alt="{{ movie.title }} poster">
+        <h3>{{ movie.title }}</h3>
+         <p>{{ movie.overview }}</p>
+ 
+        <span class="release-date">Release: {{ movie.release_date }}</span>
+         <span class="popularity">
+        <span *ngFor="let star of getPopularityStars(movie.popularity)">&#9733;</span>
+        </span>
+
+    </div>
+</div>
+<div *ngIf="!movie">No movie details available.</div>
+
+  
