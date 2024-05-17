@@ -19,7 +19,9 @@ export class FavoriteActorsComponent implements OnInit {
   private loadFavorites(): void {
     const favorites = localStorage.getItem('favoriteActors');
     if (favorites) {
-      this.favoriteActors = JSON.parse(favorites);
+      const serializedActors = JSON.parse(favorites) as string[]; // Parse to string[]
+      this.favoriteActors = serializedActors.map(serializedActor => JSON.parse(serializedActor) as Actor); // Parse each string back to Actor
     }
   }
+  
 }

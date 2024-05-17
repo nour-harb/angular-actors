@@ -1,16 +1,25 @@
-<div class="favorite-actors">
+<p>favorite-actors works!</p>
+<p class="info-text">Actor search works!</p>
+
+
+<div *ngIf="favoriteActors.length > 0">
+
   <h2>Favorite Actors</h2>
-  <div *ngIf="favoriteActors.length > 0; else noFavorites">
-    <div class="actors-grid">
-      <div *ngFor="let actor of favoriteActors" class="actor-card">
+  
+  <div class="actors-grid">
+    <ng-container *ngFor="let actor of favoriteActors; let i = index">
+      <div class="actor-card" *ngIf="i < 9">
         <img [src]="actor.profile_path ? 'https://image.tmdb.org/t/p/w185' + actor.profile_path : 'assets/default-actor-picture.png'" [alt]="actor.name + ' profile picture'">
         <h3>{{ actor.name }}</h3>
+        <div *ngIf="actor.known_for.length > 0" class="known-for">
+          <p>Known for:</p>
+          <ul>
+            <li *ngFor="let movie of actor.known_for; let j = index">
+              {{ movie.title }}{{ (j + 1) < actor.known_for.length ? ',' : '' }}
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
+    </ng-container>
   </div>
-  <ng-template #noFavorites>
-    <p>No favorite actors found.</p>
-  </ng-template>
 </div>
-
-
